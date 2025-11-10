@@ -19,6 +19,18 @@ class User(models.Model):
             self.reader_id = self.generate_reader_id()
         super().save(*args, **kwargs)
 
+    @property
+    def is_authenticated(self):
+        return True
+
+    @property
+    def is_anonymous(self):
+        return False
+
+    @property
+    def is_active(self):
+        return not self.is_frozen  # 根据你的业务逻辑调整
+
 
 class LibrarianApplication(models.Model):
     APPLICATION_STATUS = [
@@ -47,6 +59,20 @@ class Librarian(models.Model):
         if not self.librarian_id:
             self.librarian_id = self.generate_librarian_id()
         super().save(*args, **kwargs)
+
+    @property
+    def is_authenticated(self):
+        """始终返回True，表示用户已认证"""
+        return True
+
+    @property
+    def is_anonymous(self):
+        """始终返回False，表示这不是匿名用户"""
+        return False
+
+    @property
+    def is_active(self):
+        return True
 
 
 class Book(models.Model):
